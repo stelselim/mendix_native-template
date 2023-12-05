@@ -23,13 +23,17 @@ def generate_pod_dependencies
       include_script_phases(config["buildPhases"])
     end
   end
-
+  print "HEY THERE 1"
   modules = get_react_native_config["dependencies"]
+  print "HEY THERE 2"
   get_unlinked_dependency_config.each do |name, options|
+    print "HEY THERE 3"
     next unless options["ios"] && modules.include?(name) && pods = options["ios"]["pods"]
     resolved_pods.merge! pods
+    print "HEY THERE 4"
   end
 
+  print "HEY THERE 5"
   include_pods(resolved_pods.compact)
 end
 
@@ -168,16 +172,20 @@ end
 
 # Source @react-native-community/cli-platform-ios/native_modules
 def get_react_native_config
+  print "ERROR 1"
   cli_command = "try {console.log(require('@react-native-community/cli').bin);} catch (e) {console.log(require('react-native/cli').bin);}"
+  print "ERROR 2"
   cli_result = Pod::Executable.execute_command("node", ["-e", cli_command], true).strip
-
+  print "ERROR 3"
   json = []
+  print "ERROR 4"
   IO.popen(["node", cli_result, "config"]) do |data|
+    print "ERROR 5"
     while line = data.gets
       json << line
     end
   end
-
+  puts "\nHERE\n"+ json.join("\n")
   JSON.parse(json.join("\n"))
 end
 
